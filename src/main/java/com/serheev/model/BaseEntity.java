@@ -21,7 +21,9 @@ import java.io.Serializable;
         @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class),
 })
 public class BaseEntity  implements Serializable {
+
     private static final long serialVersionUID = -2099927622088121640L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="hibernate_seq")
     @SequenceGenerator(

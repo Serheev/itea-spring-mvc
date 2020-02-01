@@ -7,6 +7,7 @@ import com.serheev.repository.CompanyRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.interceptor.Interceptors;
 import java.util.List;
@@ -32,22 +33,17 @@ public class CompanyService {
         );
     }
 
+    @Transactional
     public void update(Company company) {
-        if (company.getId() != 0) {
-            Optional<CompanyEntity> companyEntity = companyRepository.findById(company.getId());
-            companyEntity.orElse(null)
-                    .setName(company.getName())
-                    .setFoundationDate(company.getFoundationDate())
-                    .setCost(company.getCost());
-            companyRepository.saveAndFlush(companyEntity.orElse(null));
+        Optional<CompanyEntity> companyEntity = companyRepository.findById(company.getId());
+        if (!companyEntity.isPresent()) {
+            return;
         }
+        companyEntity.get().setName(company.getName()).setFoundationDate(company.getFoundationDate()).setCost(company.getCost());
     }
 
     public void delete(Company company) {
-        if (company.getId() != 0) {
-            Optional<CompanyEntity> companyEntity = companyRepository.findById(company.getId());
-            companyRepository.delete(companyEntity.orElse(null));
-        }
+        companyRepository.deleteById(company.getId());
     }
 
     public void deleteById(Long id) {

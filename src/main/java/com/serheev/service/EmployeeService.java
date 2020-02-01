@@ -7,6 +7,7 @@ import com.serheev.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.interceptor.Interceptors;
 import java.util.List;
@@ -33,23 +34,17 @@ public class EmployeeService {
         );
     }
 
+    @Transactional
     public void update(Employee employee) {
-        if (employee.getId() != 0) {
-            Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employee.getId());
-            employeeEntity.orElse(null)
-                    .setName(employee.getName())
-                    .setAge(employee.getAge())
-                    .setSalary(employee.getSalary())
-                    .setSex(employee.getSex());
-            employeeRepository.saveAndFlush(employeeEntity.orElse(null));
+        Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employee.getId());
+        if (!employeeEntity.isPresent()) {
+            return;
         }
+        employeeEntity.get().setName(employee.getName()).setAge(employee.getAge()).setSex(employee.getSex()).setSalary(employee.getSalary());
     }
 
     public void delete(Employee employee) {
-        if (employee.getId() != 0) {
-            Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employee.getId());
-            employeeRepository.delete(employeeEntity.orElse(null));
-        }
+        employeeRepository.deleteById(employee.getId());
     }
 
     public void deleteById(Long id) {

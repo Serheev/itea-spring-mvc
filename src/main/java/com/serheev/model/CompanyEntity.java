@@ -20,10 +20,13 @@ import java.util.Set;
 @Accessors(chain = true)
 @Table(name = "company")
 public class CompanyEntity extends CreatableDateEntity {
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "foundation_date")
     private Date foundationDate;
+
     @Column(name = "cost")
     private Long cost;
 

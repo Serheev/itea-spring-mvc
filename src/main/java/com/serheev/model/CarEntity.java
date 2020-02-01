@@ -21,9 +21,11 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @Table(name = "car")
 public class CarEntity extends CreatableDateEntity {
+
     @Column(name = "model")
     @Enumerated(EnumType.STRING)
     private Model model;
+
     @Column(name = "power")
     private Double power;
 

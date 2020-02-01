@@ -9,6 +9,7 @@ import com.serheev.repository.CarRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.interceptor.Interceptors;
 import java.util.Arrays;
@@ -36,21 +37,17 @@ public class CarService {
         );
     }
 
+    @Transactional
     public void update(Car car) {
-        if (car.getId() != 0) {
-            Optional<CarEntity> carEntity = carRepository.findById(car.getId());
-            carEntity.orElse(null)
-                    .setModel(evaluateModel(car.getModel()))
-                    .setPower(car.getPower());
-            carRepository.saveAndFlush(carEntity.orElse(null));
+        Optional<CarEntity> carEntity = carRepository.findById(car.getId());
+        if (!carEntity.isPresent()) {
+            return;
         }
+        carEntity.get().setModel(evaluateModel(car.getModel())).setPower(car.getPower());
     }
 
     public void delete(Car car) {
-        if (car.getId() != 0) {
-            Optional<CarEntity> carEntity = carRepository.findById(car.getId());
-            carRepository.delete(carEntity.orElse(null));
-        }
+        carRepository.deleteById(car.getId());
     }
 
     public void deleteById(Long id) {

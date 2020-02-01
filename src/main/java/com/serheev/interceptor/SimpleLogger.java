@@ -6,6 +6,7 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 
 public class SimpleLogger {
+
     private static Logger log = Logger.getLogger(SimpleLogger.class);
 
     @AroundInvoke

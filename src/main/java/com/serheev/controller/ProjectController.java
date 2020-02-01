@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,33 +27,30 @@ public class ProjectController {
         return "Success!";
     }
 
-    @PostMapping(value = "/project/create", consumes = "application/json")
+    @PostMapping(value = "/project/create")
     @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
     public Project createProject(@RequestBody Project project) {
         return projectService.create(project);
     }
 
-    @GetMapping(value = "/project/list", consumes = "application/json")
-    @ResponseBody
+    @GetMapping(value = "/project/list")
     public List<Project> getProjects() {
         return projectService.findAll();
     }
 
-    @GetMapping(value = "/project/{id}", consumes = "application/json")
-    @ResponseBody
+    @GetMapping(value = "/project/{id}")
     public Project getProject(@PathVariable("id") Long id) {
         return projectService.findProjectById(id);
     }
 
-    @PutMapping(value = "/project/update/{id}", consumes = "application/json")
+    @PutMapping(value = "/project/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateProject(@RequestBody Project project, @PathVariable("id") Long id){
         projectService.update(projectService.findProjectById(id));
     }
 
-    @DeleteMapping(value = "/project/delete/{id}", consumes = "application/json")
-    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping(value = "/project/delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProject(@PathVariable("id") Long id){
         projectService.deleteById(id);
     }

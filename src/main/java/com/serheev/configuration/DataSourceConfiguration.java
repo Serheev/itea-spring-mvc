@@ -25,6 +25,7 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "com.serheev.repository")
 @PropertySource("classpath:application.properties")
 public class DataSourceConfiguration {
+
     private static final String PROP_DATABASE_DRIVER = "db.driver";
     private static final String PROP_DATABASE_PASSWORD = "db.password";
     private static final String PROP_DATABASE_URL = "db.url";
@@ -82,13 +83,4 @@ public class DataSourceConfiguration {
         return new LoggingBPP();
     }
 
-//    @Bean
-//    public CarController carController(@Autowired CarService carService) {
-//        return new CarController(carService);
-//    }
-
-//    @Bean
-//    public CarService carService(@Autowired CarRepository carRepository) {
-//        return new CarService(carRepository);
-//    }
 }

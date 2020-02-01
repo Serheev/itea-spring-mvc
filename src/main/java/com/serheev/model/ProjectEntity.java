@@ -22,12 +22,16 @@ import java.util.Set;
 @Accessors(chain = true)
 @Table(name = "project")
 public class ProjectEntity extends BaseEntity {
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "start_date")
     private Date starDate;
+
     @Column(name = "end_date")
     private Date endDate;
+
     @Column(name = "cost")
     private Long cost;
 

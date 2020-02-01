@@ -21,14 +21,19 @@ import javax.persistence.Table;
 @Accessors(chain = true)
 @Table(name = "employee")
 public class EmployeeEntity extends BaseEntity{
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "age")
     private int age;
+
     @Column(name = "sex")
     private String sex;
+
     @Column(name = "salary")
     private Long salary;
+
     @Column(name = "onleave")
     boolean onLeave;
 

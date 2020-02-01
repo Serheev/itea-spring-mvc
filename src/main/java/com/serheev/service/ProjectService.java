@@ -7,6 +7,7 @@ import com.serheev.repository.ProjectRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.interceptor.Interceptors;
 import java.util.List;
@@ -33,23 +34,17 @@ public class ProjectService {
         );
     }
 
+    @Transactional
     public void update(Project project) {
-        if (project.getId() != 0) {
-            Optional<ProjectEntity> projectEntity = projectRepository.findById(project.getId());
-            projectEntity.orElse(null)
-                    .setName(project.getName())
-                    .setStarDate(project.getStarDate())
-                    .setEndDate(project.getEndDate())
-                    .setCost(project.getCost());
-            projectRepository.saveAndFlush(projectEntity.orElse(null));
+        Optional<ProjectEntity> projectEntity = projectRepository.findById(project.getId());
+        if (!projectEntity.isPresent()) {
+            return;
         }
+        projectEntity.get().setName(project.getName()).setStarDate(project.getStarDate()).setEndDate(project.getEndDate()).setCost(project.getCost());
     }
 
     public void delete(Project project) {
-        if (project.getId() != 0) {
-            Optional<ProjectEntity> projectEntity = projectRepository.findById(project.getId());
-            projectRepository.delete(projectEntity.orElse(null));
-        }
+        projectRepository.deleteById(project.getId());
     }
 
     public void deleteById(Long id) {
