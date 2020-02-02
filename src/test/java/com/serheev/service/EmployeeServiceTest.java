@@ -1,9 +1,13 @@
 package com.serheev.service;
 
 import com.serheev.configuration.DataSourceConfiguration;
+import com.serheev.dto.Car;
+import com.serheev.dto.Company;
 import com.serheev.dto.Employee;
+import com.serheev.dto.Project;
 import com.serheev.model.EmployeeEntity;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +17,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
@@ -23,6 +28,7 @@ import static org.springframework.util.Assert.notNull;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {DataSourceConfiguration.class})
 public class EmployeeServiceTest {
+
     private static Logger log = Logger.getLogger(EmployeeServiceTest.class);
 
     @Autowired
@@ -30,19 +36,45 @@ public class EmployeeServiceTest {
 
     private ModelMapper modelMapper = new ModelMapper();
     private Employee employee;
+    private Company company;
+    private Project project;
+    private Car car;
 
     @Before
     public void setUp() {
         /** Pre-testing */
-        employeeService.truncate();
         notNull(employeeService, "null");
+
         /** Predicate */
+        company = new Company();
+        company.setName("KMB");
+        company.setFoundationDate(new Date(System.currentTimeMillis()));
+        company.setCost((long) 12_000_000);
+
+        project = new Project();
+        project.setName("ITEA WebSite");
+        project.setStarDate(new Date(System.currentTimeMillis()));
+        project.setEndDate(new Date(System.currentTimeMillis() + 1000000));
+        project.setCost((long) 1_000_000);
+        project.setCompanyId(company);
+
+        car = new Car();
+        car.setModel("AUDI");
+        car.setPower(555.0);
+
         employee = new Employee();
         employee.setName("John");
         employee.setAge(30);
         employee.setSex("man");
         employee.setSalary((long) 1_000_000);
         employee.setOnLeave(true);
+        employee.setProjectId(project);
+        employee.setCarId(car);
+    }
+
+    @After
+    public void cleanAfterTest() {
+        employeeService.truncate();
     }
 
     @Test
@@ -96,7 +128,7 @@ public class EmployeeServiceTest {
         /** Functionality and Testing*/
         assertEquals(employee.getName(), employeeService.findEmployeeById(employeeDto.getId()).getName());
         /** Logging */
-        log.info(employeeService.findEmployeeById(employeeDto.getId()));
+        log.info(employeeService.findEmployeeById(employeeDto.getId()).toString());
     }
 
     @Test

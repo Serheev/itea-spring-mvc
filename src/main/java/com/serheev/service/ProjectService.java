@@ -21,6 +21,9 @@ public class ProjectService {
     private ProjectRepository projectRepository;
 
     @Autowired
+    private CompanyService companyService;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Interceptors(SimpleLogger.class)
@@ -30,6 +33,7 @@ public class ProjectService {
                         .setStarDate(project.getStarDate())
                         .setEndDate(project.getEndDate())
                         .setCost(project.getCost())
+                        .setCompanyId(companyService.getCompanyEntity(project.getCompanyId()))
                 )
         );
     }
@@ -63,6 +67,14 @@ public class ProjectService {
         return projectRepository.findAll().stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
+    }
+
+    public ProjectEntity getProjectEntity(Project project) {
+        return convertToEntity(project);
+    }
+
+    public Project getProjectDto(ProjectEntity projectEntity) {
+        return convertToDto(projectEntity);
     }
 
     private Project convertToDto(ProjectEntity projectEntity) {

@@ -1,9 +1,11 @@
 package com.serheev.service;
 
 import com.serheev.configuration.DataSourceConfiguration;
+import com.serheev.dto.Company;
 import com.serheev.dto.Project;
 import com.serheev.model.ProjectEntity;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,21 +30,31 @@ public class ProjectServiceTest {
 
     @Autowired
     private ProjectService projectService;
-
     private ModelMapper modelMapper = new ModelMapper();
+    private Company company;
     private Project project;
 
     @Before
     public void setUp() {
         /** Pre-testing */
-        projectService.truncate();
         notNull(projectService, "null");
         /** Predicate */
+        company = new Company();
+        company.setName("KMB");
+        company.setFoundationDate(new Date(System.currentTimeMillis()));
+        company.setCost((long) 12_000_000);
+
         project = new Project();
         project.setName("ITEA WebSite");
         project.setStarDate(new Date(System.currentTimeMillis()));
         project.setEndDate(new Date(System.currentTimeMillis() + 1000000));
         project.setCost((long) 1_000_000);
+        project.setCompanyId(company);
+    }
+
+    @After
+    public void cleanAfterTest() {
+        projectService.truncate();
     }
 
     @Test

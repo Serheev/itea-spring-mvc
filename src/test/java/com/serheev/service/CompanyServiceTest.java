@@ -4,6 +4,7 @@ import com.serheev.configuration.DataSourceConfiguration;
 import com.serheev.dto.Company;
 import com.serheev.model.CompanyEntity;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,20 +29,23 @@ public class CompanyServiceTest {
 
     @Autowired
     private CompanyService companyService;
-
     private ModelMapper modelMapper = new ModelMapper();
     private Company company;
 
     @Before
     public void setUp() {
         /** Pre-testing */
-        companyService.truncate();
         notNull(companyService, "null");
         /** Predicate */
         company = new Company();
         company.setName("Microsoft");
         company.setFoundationDate(new Date(System.currentTimeMillis()));
         company.setCost((long) 1_000_000);
+    }
+
+    @After
+    public void cleanAfterTest() {
+        companyService.truncate();
     }
 
     @Test

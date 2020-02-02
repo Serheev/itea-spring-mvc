@@ -5,6 +5,7 @@ import com.serheev.dto.Car;
 import com.serheev.model.CarEntity;
 import com.serheev.model.Model;
 import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,19 +29,23 @@ public class CarServiceTest {
 
     @Autowired
     private CarService carService;
-
-    private ModelMapper modelMapper = new ModelMapper();
+    private ModelMapper modelMapper;
     private Car car;
 
     @Before
     public void setUp() {
         /** Pre-testing */
-        carService.truncate();
+        modelMapper = new ModelMapper();
         notNull(carService, "null");
         /** Predicate */
         car = new Car();
         car.setModel("AUDI");
         car.setPower(500.0);
+    }
+
+    @After
+    public void cleanAfterTest(){
+        carService.truncate();
     }
 
     @Test

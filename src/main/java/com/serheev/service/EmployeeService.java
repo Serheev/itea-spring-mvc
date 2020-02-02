@@ -20,6 +20,10 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired ProjectService projectService;
+
+    @Autowired CarService carService;
+
     @Autowired
     private ModelMapper modelMapper;
 
@@ -30,6 +34,9 @@ public class EmployeeService {
                         .setAge(employee.getAge())
                         .setSalary(employee.getSalary())
                         .setSex(employee.getSex())
+                        .setOnLeave(employee.isOnLeave())
+                        .setProjectId(projectService.getProjectEntity(employee.getProjectId()))
+                        .setCarId(carService.getCarEntity(employee.getCarId()))
                 )
         );
     }
@@ -65,12 +72,21 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    public EmployeeEntity getEmployeeEntity(Employee employee){
+        return convertToEntity(employee);
+    }
+
+    public Employee getEmployeeDto(EmployeeEntity employeeEntity){
+        return convertToDto(employeeEntity);
+    }
+
     private Employee convertToDto(EmployeeEntity employeeEntity) {
         Employee employee = modelMapper.map(employeeEntity, Employee.class);
         employee.setName(employeeEntity.getName());
         employee.setAge(employeeEntity.getAge());
         employee.setSex(employeeEntity.getSex());
         employee.setSalary(employeeEntity.getSalary());
+        employee.setOnLeave(employeeEntity.isOnLeave());
         return employee;
     }
 
@@ -80,6 +96,7 @@ public class EmployeeService {
         employeeEntity.setAge(employee.getAge());
         employeeEntity.setSex(employee.getSex());
         employeeEntity.setSalary(employee.getSalary());
+        employeeEntity.setOnLeave(employee.isOnLeave());
         return employeeEntity;
     }
 }

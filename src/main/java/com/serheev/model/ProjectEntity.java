@@ -37,8 +37,8 @@ public class ProjectEntity extends BaseEntity {
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "company_id")
-    private CompanyEntity company;
+    private CompanyEntity companyId;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "projectId")
     private Set<EmployeeEntity> employees;
 }

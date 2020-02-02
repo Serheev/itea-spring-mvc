@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +29,6 @@ public class CompanyEntity extends CreatableDateEntity {
     @Column(name = "cost")
     private Long cost;
 
-    @OneToMany(mappedBy = "company")
+    @OneToMany(mappedBy = "companyId")
     private Set<ProjectEntity> projects;
 }

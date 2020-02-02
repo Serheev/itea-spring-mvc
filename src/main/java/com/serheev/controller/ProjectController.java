@@ -22,11 +22,6 @@ public class ProjectController {
     @Autowired
     private ProjectService projectService;
 
-    @GetMapping("/project/test")
-    public String test() {
-        return "Success!";
-    }
-
     @PostMapping(value = "/project/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Project createProject(@RequestBody Project project) {

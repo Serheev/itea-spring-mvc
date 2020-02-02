@@ -3,21 +3,18 @@ package com.serheev.service;
 import com.serheev.dto.Car;
 import com.serheev.interceptor.SimpleLogger;
 import com.serheev.model.CarEntity;
-import com.serheev.model.Model;
 import com.serheev.repository.CarRepository;
 
+import com.serheev.utils.ModelEvaluate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.interceptor.Interceptors;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 public class CarService {
@@ -31,7 +28,7 @@ public class CarService {
     @Interceptors(SimpleLogger.class)
     public Car create(Car car) {
         return convertToDto(carRepository.saveAndFlush(new CarEntity()
-                        .setModel(evaluateModel(car.getModel()))
+                        .setModel(ModelEvaluate.evaluateModel(car.getModel()))
                         .setPower(car.getPower())
                 )
         );
@@ -43,7 +40,7 @@ public class CarService {
         if (!carEntity.isPresent()) {
             return;
         }
-        carEntity.get().setModel(evaluateModel(car.getModel())).setPower(car.getPower());
+        carEntity.get().setModel(ModelEvaluate.evaluateModel(car.getModel())).setPower(car.getPower());
     }
 
     public void delete(Car car) {
@@ -68,13 +65,12 @@ public class CarService {
                 .collect(Collectors.toList());
     }
 
-    private Model evaluateModel(String model) {
-        return Arrays.stream(Model.values())
-                .map(Enum::toString)
-                .collect(toList())
-                .contains(model)
-                ? Model.valueOf(model)
-                : Model.UNKNOWN;
+    public CarEntity getCarEntity(Car car){
+        return convertToEntity(car);
+    }
+
+    public Car getCarDto(CarEntity carEntity){
+        return convertToDto(carEntity);
     }
 
     private Car convertToDto(CarEntity carEntity) {
@@ -86,7 +82,7 @@ public class CarService {
 
     private CarEntity convertToEntity(Car car) {
         CarEntity carEntity = modelMapper.map(car, CarEntity.class);
-        carEntity.setModel(evaluateModel(car.getModel()));
+        carEntity.setModel(ModelEvaluate.evaluateModel(car.getModel()));
         carEntity.setPower(car.getPower());
         return carEntity;
     }

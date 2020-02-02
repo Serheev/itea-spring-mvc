@@ -22,11 +22,6 @@ public class CarController {
     @Autowired
     private CarService carService;
 
-    @GetMapping("/car/test")
-    public String test() {
-        return "Success!";
-    }
-
     @PostMapping(value = "/car/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Car createCar(@RequestBody Car car) {

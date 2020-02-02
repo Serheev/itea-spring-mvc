@@ -64,6 +64,14 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
+    public CompanyEntity getCompanyEntity(Company company){
+        return convertToEntity(company);
+    }
+
+    public Company getCompanyDto(CompanyEntity companyEntity){
+        return convertToDto(companyEntity);
+    }
+
     private Company convertToDto(CompanyEntity companyEntity) {
         Company company = modelMapper.map(companyEntity, Company.class);
         company.setName(companyEntity.getName());

@@ -16,7 +16,6 @@ import javax.persistence.Table;
 @Entity
 @Setter
 @Getter
-@ToString
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = "car")
@@ -29,6 +28,6 @@ public class CarEntity extends CreatableDateEntity {
     @Column(name = "power")
     private Double power;
 
-    @OneToOne(mappedBy = "car")
+    @OneToOne(mappedBy = "carId")
     private EmployeeEntity employee;
 }

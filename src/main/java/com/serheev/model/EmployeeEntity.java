@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,13 +34,13 @@ public class EmployeeEntity extends BaseEntity{
     private Long salary;
 
     @Column(name = "onleave")
-    boolean onLeave;
+    private boolean onLeave;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "project_id")
-    private ProjectEntity project;
+    private ProjectEntity projectId;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
-    private CarEntity car;
+    private CarEntity carId;
 }

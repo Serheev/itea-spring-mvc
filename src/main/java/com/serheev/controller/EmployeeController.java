@@ -22,11 +22,6 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping("/employee/test")
-    public String test() {
-        return "Success!";
-    }
-
     @PostMapping(value = "/employee/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Employee createEmployee(@RequestBody Employee employee) {

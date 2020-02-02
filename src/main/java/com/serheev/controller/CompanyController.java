@@ -22,11 +22,6 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
 
-    @GetMapping("/company/test")
-    public String test() {
-        return "Success!";
-    }
-
     @PostMapping(value = "/company/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Company createCompany(@RequestBody Company company) {
